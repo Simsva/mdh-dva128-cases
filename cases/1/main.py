@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys
+import math
 import types
 from typing import NamedTuple
 
@@ -26,6 +26,12 @@ operation_index = {
   "/": 3,
   ":": 3,
   "div": 3,
+  "^": 4,
+  "**": 4,
+  "pow": 4,
+  "!": 5,
+  "fac": 5,
+  "gam": 5,
   "q": -1,
   "quit": -1,
 }
@@ -59,6 +65,20 @@ operations = [
     {'a': float, 'b': float},
     'c',
     lambda x: x['a'] / x['b']
+  ),
+  Operation(
+    "Exponentiation",
+    "a ^ b = c",
+    {'a': float, 'b': float},
+    'c',
+    lambda x: x['a']**x['b']
+  ),
+  Operation(
+    "Factorial",
+    "a! = b",
+    {'a': float},
+    'b',
+    lambda x: math.gamma(x['a']+1)
   ),
   # Always last in operation list
   Operation(
