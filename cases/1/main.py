@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# vim: sw=2 ts=2 et
 
 import math
 import types
@@ -161,5 +162,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-
-# vim: sw=2 ts=2 et

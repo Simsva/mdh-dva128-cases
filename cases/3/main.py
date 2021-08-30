@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# vim: sw=2 ts=2 et
 
 import requests
 import json
@@ -69,7 +70,7 @@ Input Name:
 }
 
 def cls():
-    os.system('cls' if os.name=='nt' else 'clear')
+  os.system('cls' if os.name=='nt' else 'clear')
 
 def get_data(url):
   return_string = requests.get(url) # gets json string of data
