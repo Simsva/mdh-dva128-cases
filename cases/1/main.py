@@ -6,6 +6,7 @@ import re
 import types
 from typing import NamedTuple
 
+## Functions/Classes
 # The closest you can get to C structs in Python
 class Operation(NamedTuple):
   name: str
@@ -14,6 +15,37 @@ class Operation(NamedTuple):
   out_var: str
   func: types.FunctionType
 
+# Remove ANSI escape sequences from a string
+def remove_ansi(string):
+  ansi_regex = re.compile(r"\x1b\[[0-9;]*m")
+  return ansi_regex.sub("", string)
+
+# Generate a ascii text box around text
+def generate_textbox(title, body, minlength=0):
+  # Remove ANSI codes for length calculations
+  raw_title = remove_ansi(title)
+  raw_body = [ remove_ansi(line) for line in body ]
+
+  # Get longest line in box or minlength
+  length = max(minlength, len(raw_title), max(len(line) for line in raw_body))
+
+  # Make sure title can be centered
+  length += abs(length % 2 - len(raw_title) % 2)
+  title_pad = ' '*((length-len(raw_title))//2)
+
+  # Format each body line from raw length
+  formatted_body = '\n'.join([ "| {line}{line_pad} |".format(
+    line_pad=' '*(length-len(raw_body[i])),
+    line=body[i]
+  ) for i in range(len(body)) ])
+
+  return '''{eq}
+| {title_pad}{title}{title_pad} |
+|{dash}|
+{body}
+{eq}'''.format(eq='='*(length+4), title_pad=title_pad, title=title, dash='-'*(length+2), body=formatted_body, length=length)
+
+## Options
 var_prompt = "{var} = "
 
 # List of aliases/bindings
@@ -92,34 +124,7 @@ operations = [
   ),
 ]
 
-def remove_ansi(string):
-  ansi_regex = re.compile(r"\x1b\[[0-9;]*m")
-  return ansi_regex.sub("", string)
-
-def generate_textbox(title, body, minlength=0):
-  # Remove ANSI codes for length calculations
-  raw_title = remove_ansi(title)
-  raw_body = [ remove_ansi(line) for line in body ]
-
-  # Get longest line in box or minlength
-  length = max(minlength, len(raw_title), max(len(line) for line in raw_body))
-
-  # Make sure title can be centered
-  length += abs(length % 2 - len(raw_title) % 2)
-  title_pad = ' '*((length-len(raw_title))//2)
-
-  # Format each body line from raw length
-  formatted_body = '\n'.join([ "| {line}{line_pad} |".format(
-    line_pad=' '*(length-len(raw_body[i])),
-    line=body[i]
-  ) for i in range(len(body)) ])
-
-  return '''{eq}
-| {title_pad}{title}{title_pad} |
-|{dash}|
-{body}
-{eq}'''.format(eq='='*(length+4), title_pad=title_pad, title=title, dash='-'*(length+2), body=formatted_body, length=length)
-
+## Code
 def execute_oper(oper):
   print(generate_textbox(
     title="\x1b[1m{0}\x1b[m".format(oper.name),
