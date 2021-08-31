@@ -2,6 +2,7 @@
 # vim: sw=2 ts=2 et
 
 import math
+import re
 import types
 from typing import NamedTuple
 
@@ -91,15 +92,27 @@ operations = [
   ),
 ]
 
-def generate_textbox(title, body, minlength=0):
-  # Get longest line in box or minlength
-  length = max(minlength, len(title), max(len(line) for line in body))
-  # Make sure title can be centered
-  if length % 2 != len(title) % 2:
-    length += 1
-  title_pad = ' '*((length-len(title))//2)
+def remove_ansi(string):
+  ansi_regex = re.compile(r"\x1b\[[0-9;]*m")
+  return ansi_regex.sub("", string)
 
-  formatted_body = '\n'.join([ "| {line: <{length}} |".format(line=line, length=length) for line in body ])
+def generate_textbox(title, body, minlength=0):
+  # Remove ANSI codes for length calculations
+  raw_title = remove_ansi(title)
+  raw_body = [ remove_ansi(line) for line in body ]
+
+  # Get longest line in box or minlength
+  length = max(minlength, len(raw_title), max(len(line) for line in raw_body))
+
+  # Make sure title can be centered
+  length += abs(length % 2 - len(raw_title) % 2)
+  title_pad = ' '*((length-len(raw_title))//2)
+
+  # Format each body line from raw length
+  formatted_body = '\n'.join([ "| {line}{line_pad} |".format(
+    line_pad=' '*(length-len(raw_body[i])),
+    line=body[i]
+  ) for i in range(len(body)) ])
 
   return '''{eq}
 | {title_pad}{title}{title_pad} |
@@ -109,7 +122,7 @@ def generate_textbox(title, body, minlength=0):
 
 def execute_oper(oper):
   print(generate_textbox(
-    title=oper.name,
+    title="\x1b[1m{0}\x1b[m".format(oper.name),
     body=oper.usage.split('\n')
   ))
 
@@ -131,6 +144,7 @@ def main():
   # Jank way to format aliases to operations
   aliases = dict()
   for alias, id in operation_index.items():
+    alias = "\x1b[4m{0}\x1b[m".format(alias)
     if id in aliases:
       aliases[id].append(alias)
     else:
@@ -142,7 +156,7 @@ def main():
 
   while True:
     print(generate_textbox(
-      title="Usage:",
+      title="\x1b[1mUsage:\x1b[m",
       body=body
     ))
 
