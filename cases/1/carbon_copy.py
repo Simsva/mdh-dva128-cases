@@ -15,14 +15,16 @@ def inputVar(name, type_fn):
 
 def main():
   operators = {
-    "add":   { "desc": "a + b = c",     "func": lambda: inputVar('a', float) + inputVar('b', float) },
-    "sub":   { "desc": "a - b = c",     "func": lambda: inputVar('a', float) - inputVar('b', float) },
-    "mul":   { "desc": "a * b = c",     "func": lambda: inputVar('a', float) * inputVar('b', float) },
-    "div":   { "desc": "a / b = c",     "func": lambda: inputVar('a', float) / inputVar('b', float) },
-    "erfc":  { "desc": "erfc(x) = c",   "func": lambda: math.erfc(inputVar('x', float)) },
-    "erf":   { "desc": "erf(x) = c",    "func": lambda: math.erf(inputVar('x', float)) },
-    "lgam":  { "desc": "lgamma(x) = c", "func": lambda: math.lgamma(inputVar('x', float)) },
-    "asinh": { "desc": "asinh(x) = c",  "func": lambda: cmath.asinh(inputVar('x', complex)) }
+    "add":    { "desc": "a + b = c",      "func": lambda: inputVar('a', complex) + inputVar('b', complex) },
+    "sub":    { "desc": "a - b = c",      "func": lambda: inputVar('a', complex) - inputVar('b', complex) },
+    "mul":    { "desc": "a * b = c",      "func": lambda: inputVar('a', complex) * inputVar('b', complex) },
+    "div":    { "desc": "a / b = c",      "func": lambda: inputVar('a', complex) / inputVar('b', complex) },
+    "erf":    { "desc": "erf(x) = c",     "func": lambda: math.erf(inputVar('x', float)) },
+    "erfc":   { "desc": "erfc(x) = c",    "func": lambda: math.erfc(inputVar('x', float)) },
+    "lgam":   { "desc": "lgamma(x) = c",  "func": lambda: math.lgamma(inputVar('x', float)) },
+    "asinh":  { "desc": "asinh(x) = c",   "func": lambda: cmath.asinh(inputVar('x', complex)) },
+    "isnan":  { "desc": "isnan(x) = c",   "func": lambda: cmath.isnan(inputVar('x', complex)) },
+    "istrue": { "desc": "istrue(x) = c",  "func": lambda: not not inputVar('x', complex) }
   }
 
   # Operator list is hardcoded
@@ -30,14 +32,16 @@ def main():
 ****************************************
           Mathlete Calculator
 ----------------------------------------
- add   | Add two numbers
- sub   | Subtract two numbers
- mul   | Multiply two numbers
- div   | Divide two numbers
- erf   | Calculate the error function at x
- erfc  | Calculate the complementary error function at x
- lgam  | Calculate the natural logarithm of the absolute value of the Gamma function at x
- asinh | Calculate the inverse hyperbolic sine of x
+ add    | Add two numbers
+ sub    | Subtract two numbers
+ mul    | Multiply two numbers
+ div    | Divide two numbers
+ erf    | Calculate the error function at x
+ erfc   | Calculate the complementary error function at x
+ lgam   | Calculate the natural logarithm of the absolute value of the Gamma function at x
+ asinh  | Calculate the inverse hyperbolic sine of x
+ isnan  | Checks if x is NaN
+ istrue | Checks if x is True
 ----------------------------------------"""
 
   # Variable names are hard-coded
