@@ -61,7 +61,10 @@ Calculating 'c' for expression:
       oper = operators[oper_name]
       print(usage.format(desc=oper["desc"]))
 
-      print("\nRESULT: c = {}\n".format(oper["func"]()))
+      try:
+          print("\nRESULT: c = {}\n".format(oper["func"]()))
+      except Exception as e:
+          print("ERROR: Problem with operation: '{}'".format(e))
     else:
       print("ERROR: Unknown command '{}'".format(oper_name))
 
