@@ -68,12 +68,13 @@ usage_actions = [
 list_fmt = "ID: {id} - [{check}] {action}, {time} at {place}"
 
 todo_list = [
-    Todo(0, "action1", "15:00", "place1"),
-    Todo(1, "action2", "time2", "place2")
 ]
 
 with open('todos.txt', 'r') as read_file:
-    print(json.loads(read_file.read()))
+    temp_array = json.loads(read_file.read())
+    for todo in temp_array:
+        todo_list.append(Todo(*todo.values()))
+
 
 # Code
 
