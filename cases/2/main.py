@@ -4,12 +4,11 @@
 import re
 import json
 from dataclasses import dataclass
+from os import path
 
 # TODO: Dynamically generate usage from list of actions to be similar to Case 1?
 
 # Functions/Classes
-
-
 @dataclass
 class Todo:
     action: str
@@ -19,15 +18,11 @@ class Todo:
 
 
 # Remove ANSI escape sequences from a string
-
-
 def remove_ansi(string):
     ansi_regex = re.compile(r"\x1b\[[0-9;]*m")
     return ansi_regex.sub("", string)
 
 # Generate a ascii text box around text
-
-
 def generate_textbox(title, body, minlength=0):
     # Remove ANSI codes for length calculations
     raw_title = remove_ansi(title)
@@ -70,15 +65,15 @@ list_fmt = "ID: {id} - [{check}] {action}, {time} at {place}"
 todo_list = [
 ]
 
-with open('todos.txt', 'r') as read_file:
-    temp_array = json.loads(read_file.read())
-    for todo in temp_array:
-        todo_list.append(Todo(*todo.values()))
+todo_file = path.join(path.dirname(path.realpath(__file__)), "todo_main.json")
 
+if path.isfile(todo_file):
+  with open(todo_file, 'r') as f:
+      temp_array = json.loads(f.read())
+      for todo in temp_array:
+          todo_list.append(Todo(*todo.values()))
 
 # Code
-
-
 def main():
     usage = generate_textbox(
         title="\x1b[1mUsage:\x1b[m",
@@ -135,9 +130,9 @@ def main():
         else:
             print("Invalid operation: '{0}'".format(query))
 
-        json_string = json.dumps([ob.__dict__ for ob in todo_list])
-        with open('todos.txt', 'w') as write_file:
-            write_file.write(json_string)
+        with open(todo_file, 'w') as f:
+            f.write(json.dumps([ob.__dict__ for ob in todo_list]))
+
         input("Press ENTER to continue...")
 
 

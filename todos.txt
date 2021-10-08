@@ -1,1 +1,0 @@
-[{"action": "action1", "time": "15:00", "place": "place1", "check": false}, {"action": "action2", "time": "time2", "place": "place2", "check": false}, {"action": "action1", "time": "15:00", "place": "place1", "check": false}, {"action": "action2", "time": "time2", "place": "place2", "check": false}]
