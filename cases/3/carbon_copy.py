@@ -36,15 +36,16 @@ def view_artist():
     # i: { "name", "id" } => { "name": "id" }
     artists = dict(map(lambda a: (a["name"].lower(), a["id"]), artists_raw))
 
-    artist_name = input("Selection > ")
+    artist_name = input("Selection > ").lower()
     if artist_name in artists:
         data = get_data("{0}/artists/{1}/".format(api_url, artists[artist_name]))["artist"]
 
-        info = dict()
-        info["name"] = data["name"]
-        info["genres"] = ", ".join(data["genres"])
-        info["years_active"] = ", ".join(data["years_active"])
-        info["members"] = ", ".join(data["members"])
+        info = {
+            "name": data["name"],
+            "genres": ", ".join(data["genres"]),
+            "years_active": ", ".join(data["years_active"]),
+            "members": ", ".join(data["members"]),
+        }
 
         info_text = """\
 ----------------------------------------
