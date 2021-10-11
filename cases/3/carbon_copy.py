@@ -14,6 +14,7 @@ def get_data(url):
         return r.json()
     else:
         sys.stderr.write("ERROR: Failed to get data from API\n")
+        sys.exit(1)
 
 def list_artists():
     cls()
