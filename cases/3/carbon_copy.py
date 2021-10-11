@@ -3,7 +3,7 @@
 import requests
 import os, sys
 
-api_url = "https://5hyqtreww2.execute-api.eu-north-1.amazonaws.com/"
+api_url = "https://5hyqtreww2.execute-api.eu-north-1.amazonaws.com"
 
 def cls():
     os.system("cls" if os.name=="nt" else "clear")
@@ -18,7 +18,7 @@ def get_data(url):
 def list_artists():
     cls()
 
-    artists = get_data("{}artists/".format(api_url))["artists"]
+    artists = get_data("{}/artists/".format(api_url))["artists"]
     artist_list = '\n'.join(map(lambda a: "| {}".format(a["name"]), artists))
 
     print("""\
@@ -32,14 +32,13 @@ def list_artists():
     return artists
 
 def view_artist():
-    print("Doin' your mom")
     artists_raw = list_artists()
     # i: { "name", "id" } => { "name": "id" }
     artists = dict(map(lambda a: (a["name"].lower(), a["id"]), artists_raw))
 
     artist_name = input("Selection > ")
     if artist_name in artists:
-        data = get_data("{0}artists/{1}/".format(api_url, artists[artist_name]))["artist"]
+        data = get_data("{0}/artists/{1}/".format(api_url, artists[artist_name]))["artist"]
 
         info = dict()
         info["name"] = data["name"]
