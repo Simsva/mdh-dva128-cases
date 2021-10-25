@@ -10,17 +10,6 @@ api = "http://football-frenzy.s3-website.eu-north-1.amazonaws.com/api"
 def cls():
     os.system("cls" if os.name == "nt" else "clear")
 
-def get_json(url):
-    r = requests.get(url)
-    if r.status_code == 200:
-        return r.json()
-    elif r.status_code == 404:
-        sys.stderr.write("ERROR: Season ")
-    else:
-        sys.stderr.write("ERROR: Failed to get data from API\n")
-
-    sys.exit(1)
-
 def list_seasons():
     data = None
     r = requests.get(api)
@@ -47,7 +36,7 @@ def view_season():
 
     # Overall game statistics
     #   index: [team_name, wins, draws, losses, points]
-    stats = list(map(lambda x: [x[1], 0, 0, 0, 0], enumerate(data["teams"])))
+    stats = list(map(lambda x: [x, 0, 0, 0, 0], data["teams"]))
     # Map team name to index
     team_to_index = dict(map(lambda x: (x[1][0], x[0]), enumerate(stats)))
 
