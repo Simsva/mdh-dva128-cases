@@ -31,7 +31,9 @@ def main():
                     print("Index Does not exist '" + index + "'")
                 except ValueError:
                     print("Invalid Index '" + index + "'")
-        else: print("invalid command '" + command + "'")
+        else: 
+            print("invalid command '" + command + "'")
+            input("Press Enter to continue")
 
 
 if __name__ == "__main__": main()
